@@ -1,0 +1,57 @@
+# Xcode
+.DS_Store
+*/build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData/
+*.swiftpm
+*.xcscmblueprint
+
+# Swift
+*.swiftmodule
+*.swiftdoc
+*.doccarchive
+
+# Build files
+*.o
+*.out
+*.so
+*.dll
+*.dylib
+*.a
+*.exe
+
+# Other
+*.log
+*.tmp
+*.temp
+*.zip
+
+# Python (scripts/ test helpers)
+__pycache__/
+*.pyc
+
+# Secrets - ensure no API keys are committed
+# NOTE: echo/Info.plist IS tracked (see below) as a template with blank values
+# for AgnesAPIKey / AGNES_AI_API_KEY / IMGBB_API_KEY / CaiyunWeatherToken.
+# Never fill real secrets into the tracked file — inject them locally
+# (untracked local override, Xcode build setting, or CI secret) instead.
+
+# Xcode user data
+xcuserdata/
+*.xcuserstate
+
+# Local per-developer signing config (Team ID / Bundle Identifier).
+# Config/Local.xcconfig.example IS tracked as the template — copy it to
+# Config/Local.xcconfig and fill in your own values; that copy is ignored
+# so your personal Team ID/Bundle ID never gets committed.
+Config/Local.xcconfig

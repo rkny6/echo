@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>processing</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>我们需要访问你的位置，以便在你出门活动时主动关心你。</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>我们需要在后台访问你的位置，这样即使没有打开App，也能在你出门活动时主动关心你。</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.echo.app.refresh</string>
+		<string>com.echo.app.health-processing</string>
+		<string>com.echo.app.diary-refresh</string>
+	</array>
+	<!-- 允许本地 HTTP（本地开发用 MCP 测试服务器 127.0.0.1:8000）。仅放开本地网络，
+	     不放开任意明文 HTTP，以免影响 App Store 审核策略。 -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We need access to your health data (steps, sleep, heart rate variability, and menstrual cycle) to provide personalized companionship and health insights tailored to your wellness goals.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We request permission to update your health records if you choose to save wellness milestones from our conversations.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photos so you can send images to your companion for recognition and conversation context.</string>
+	<key>AgnesAPIKey</key>
+	<string></string>
+	<key>AGNES_AI_API_KEY</key>
+	<string></string>
+	<key>IMGBB_API_KEY</key>
+	<string></string>
+	<!-- Optional override for Caiyun Weather token. Empty uses the built-in demo token. -->
+	<key>CaiyunWeatherToken</key>
+	<string></string>
+</dict>
+</plist>

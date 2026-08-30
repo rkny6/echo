@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.echo.mcp-test</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>-u</string>
+        <string>/tmp/mcp_test_server.py</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/tmp</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/mcp_test_server.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/mcp_test_server.err.log</string>
+</dict>
+</plist>

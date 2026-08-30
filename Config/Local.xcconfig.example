@@ -1,0 +1,19 @@
+// 本地签名配置模板
+//
+// 使用方法：
+// 1. 复制这个文件，改名为 Local.xcconfig（放在同一个 Config/ 目录下）
+// 2. 把下面两行改成你自己的值
+// 3. Local.xcconfig 已经在 .gitignore 里，你对它的修改不会被提交到 git
+//
+// 不知道自己的 DEVELOPMENT_TEAM（Apple 开发者 Team ID）是多少？
+// 新建一个随便的空白 Xcode 项目（File → New → Project，模板随便选），
+// 在它的 Signing & Capabilities 里的 Team 下拉菜单选一下你的 Apple ID，
+// Team 那一栏会显示成类似 "你的名字 (A1B2C3D4E5)" 的格式，
+// 括号里那串 10 位字符就是你的 Team ID，记下来后把这个临时项目删掉即可
+// —— 这样不会碰到 Echo 项目本身的任何文件。
+//
+// PRODUCT_BUNDLE_IDENTIFIER 可以随便改成任意独一无二的字符串，
+// 比如把 rkny6 换成你自己的名字拼音或者一个随机单词。
+
+DEVELOPMENT_TEAM =
+PRODUCT_BUNDLE_IDENTIFIER = rkny6.echo

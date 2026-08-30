@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🔒 安全漏洞报告
+    url: https://github.com/rkny6/echo/security/advisories/new
+    about: 请勿在公开 Issue 中报告安全漏洞，参见 SECURITY.md 中的报告方式
+  - name: 💬 讨论 / 提问
+    url: https://github.com/rkny6/echo/discussions
+    about: 使用上的疑问、架构讨论、想法交流，建议先发到 Discussions（如已开启）

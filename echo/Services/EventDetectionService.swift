@@ -108,7 +108,8 @@ actor EventDetectionService: EventDetecting {
         // Detect menstrual cycle
         if let cycleData = try await healthDataService.getMenstrualCyclePrediction(),
            cycleData.isPredictionReliable,
-           cycleData.daysUntilStart >= 1 && cycleData.daysUntilStart <= 3 {
+           cycleData.daysUntilStart >= 0,
+           cycleData.daysUntilStart <= HealthProactiveThresholds.menstrualApproachWindowDays {
             let event = CompanionEvent(
                 type: .menstrualCycle,
                 priority: CompanionEventType.menstrualCycle.defaultPriority,

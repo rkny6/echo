@@ -11,8 +11,10 @@ actor HealthDataService: HealthDataProviding {
     private static let menstrualHistoryMonths = 12
     /// Window used when evaluating cycle-length variability
     private static let menstrualVariabilityMonths = 6
-    /// Max standard deviation (days) across recent cycles to treat a prediction as reliable
-    private static let maxCycleLengthStdDevDays = 5.0
+    /// Max standard deviation (days) across recent cycles to treat a prediction as reliable.
+    /// 6 days (was 5) pairs with the wider approach window so mildly irregular —
+    /// but still predictable — cycles can receive care without spamming.
+    private static let maxCycleLengthStdDevDays = 6.0
     /// Minimum gap between period start dates when clustering flow days into cycles
     private static let minDaysBetweenPeriodStarts = 15
     /// Valid cycle length range (days) for inclusion in averages
@@ -298,12 +300,16 @@ actor HealthDataService: HealthDataProviding {
             round(Double(allCycleLengths.reduce(0, +)) / Double(allCycleLengths.count))
         )
         
-        let stdDev = Self.standardDeviation(recentCycleLengths.isEmpty ? allCycleLengths : recentCycleLengths)
-        let isReliable = recentCycleLengths.count >= 2 && stdDev <= Self.maxCycleLengthStdDevDays
+        // Prefer the recent variability window, but fall back to the full history
+        // when too few cycles landed in it — sparse-but-stable logging (e.g. one
+        // period per quarter) should still count as reliable.
+        let basisCycles = recentCycleLengths.count >= 2 ? recentCycleLengths : allCycleLengths
+        let stdDev = Self.standardDeviation(basisCycles)
+        let isReliable = basisCycles.count >= 2 && stdDev <= Self.maxCycleLengthStdDevDays
         
         AppLog.debug(
             "HealthDataService",
-            "Cycle stats: avg=\(averageCycleLength)d stdDev=\(String(format: "%.1f", stdDev))d reliable=\(isReliable)"
+            "Cycle stats: avg=\(averageCycleLength)d stdDev=\(String(format: "%.1f", stdDev))d basis=\(basisCycles.count) reliable=\(isReliable)"
         )
         
         // Base prediction: last period start + average cycle length

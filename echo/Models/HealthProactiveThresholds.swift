@@ -89,7 +89,7 @@ enum HealthProactiveThresholds {
     // Unlike sleep/steps (daily observations), menstrual care is once per
     // predicted cycle. Detection uses a reliable forecast and the approach
     // window; delivery dedup is keyed by predicted period start day so the
-    // 1–3 day window cannot fire again on later days of the same cycle.
+    // multi-day window cannot fire again on later days of the same cycle.
 
     /// Care when next period is this many days away (inclusive of 0 = day-of).
     static let menstrualApproachWindowDays = 3

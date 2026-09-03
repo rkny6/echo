@@ -1,4 +1,4 @@
-# Echo Architecture
+# echo Architecture
 
 This refactor keeps the current product behavior and UI contract while simplifying the application layer.
 

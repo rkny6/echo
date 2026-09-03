@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Echo 本地 MCP 测试服务器（零依赖，仅用 Python 标准库）。
+"""echo 本地 MCP 测试服务器（零依赖，仅用 Python 标准库）。
 
-作用：验证 Echo iOS 客户端的 MCP Streamable HTTP 链路：
+作用：验证 echo iOS 客户端的 MCP Streamable HTTP 链路：
   initialize 握手 → notifications/initialized → tools/list → tools/call
 
 会把你收到的每个请求（Header + Body）打印到终端，
@@ -167,7 +167,7 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     server = ThreadingHTTPServer(("127.0.0.1", 8000), Handler)
-    print("Echo MCP 测试服务器已启动: http://127.0.0.1:8000")
+    print("echo MCP 测试服务器已启动: http://127.0.0.1:8000")
     print("按 Ctrl+C 停止\n")
     try:
         server.serve_forever()

@@ -82,11 +82,11 @@ Team ID 是一串 10 位的字母数字组合，代表"这是你的 Apple 开发
 3. 新项目打开后，点左侧文件列表最顶上的项目图标，再点中间面板上的 **Signing & Capabilities** 标签
 4. 找到 **Team** 这一栏，点开下拉菜单，选择你刚才登录的 Apple 账号
 5. 选中后，这一栏会显示成类似 **"你的名字 (A1B2C3D4E5)"** 的样子，**括号里那 10 位字符就是你的 Team ID**，把它记下来（截图或者抄在备忘录里都行）
-6. 记下来之后，这个临时项目就没用了，可以直接删掉（在 Finder 里找到它拖进废纸篓即可），**不会影响到 Echo 项目**
+6. 记下来之后，这个临时项目就没用了，可以直接删掉（在 Finder 里找到它拖进废纸篓即可），**不会影响到 echo 项目**
 
 ### 6-2. 复制配置文件
 
-1. 在 Finder 里打开 Echo 项目文件夹，找到里面的 **`Config`** 文件夹
+1. 在 Finder 里打开 echo 项目文件夹，找到里面的 **`Config`** 文件夹
 2. 里面有个文件叫 **`Local.xcconfig.example`**，选中它，按 `Cmd + C` 复制，再按 `Cmd + V` 粘贴，Finder 会生成一份叫 "Local.xcconfig example 2" 之类名字的副本
 3. 把这份副本重命名为 **`Local.xcconfig`**（去掉 `.example`，保留最前面的 `Local` 和最后面的 `.xcconfig`，中间不要有多余的字）
 
@@ -99,7 +99,7 @@ Team ID 是一串 10 位的字母数字组合，代表"这是你的 Apple 开发
 
 > 💡 **Team** 就是"这是谁的身份"，**Bundle Identifier** 就是"这个 App 在全世界的唯一编号"，两个人不能用同一个编号，所以必须改成你自己的。这两项现在都存在 `Local.xcconfig` 这个文件里，它不会被提交回项目仓库，你怎么改都不会影响到原作者或者其他 clone 这个项目的人。
 
-> ⚠️ 如果你已经打开了 Echo 项目、并且不小心在 Echo 项目的 **Signing & Capabilities** 面板里点过 Team 或改过 Bundle Identifier，建议关掉 Xcode，把 `Local.xcconfig` 按上面的步骤重新配置好之后再打开，避免两边设置打架。
+> ⚠️ 如果你已经打开了 echo 项目、并且不小心在 echo 项目的 **Signing & Capabilities** 面板里点过 Team 或改过 Bundle Identifier，建议关掉 Xcode，把 `Local.xcconfig` 按上面的步骤重新配置好之后再打开，避免两边设置打架。
 
 ---
 

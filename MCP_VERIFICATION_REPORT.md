@@ -2,13 +2,13 @@
 
 ## 概述
 
-本报告详细记录了对 iOS 应用 "Echo" 的 MCP (Model Context Protocol) 客户端功能的完整验证过程。通过三层独立测试，确认了 MCP 协议层、客户端代码逻辑和模拟器端到端集成均能正常工作。
+本报告详细记录了对 iOS 应用 "echo" 的 MCP (Model Context Protocol) 客户端功能的完整验证过程。通过三层独立测试，确认了 MCP 协议层、客户端代码逻辑和模拟器端到端集成均能正常工作。
 
 ## 验证目标
 
 1.  **协议层验证**：确认 MCP 协议（initialize, notifications/initialized, tools/list, tools/call）在 HTTP 层面可被正确解析和响应。
 2.  **客户端代码验证**：使用真实的 `MCPClient.swift` 和 `MCPStreamableHTTPTransport.swift` 代码编译成 macOS 可执行文件，验证其核心逻辑无缺陷。
-3.  **模拟器端到端验证**：在 iOS 模拟器中运行 Echo app，连接宿主机上的测试服务器，验证从 UI 到网络的完整链路是否通畅。
+3.  **模拟器端到端验证**：在 iOS 模拟器中运行 echo app，连接宿主机上的测试服务器，验证从 UI 到网络的完整链路是否通畅。
 
 ## 测试环境
 
@@ -74,7 +74,7 @@ swiftc echo/Domain/LLM/JSONValue.swift ... scripts/echo_mcp_client_test.swift -o
 ### 3. 模拟器端到端验证 (Pass)
 
 
-在 iOS 模拟器中安装并启动 Echo app，配置其连接到宿主机的 MCP 测试服务器，观察实际行为。
+在 iOS 模拟器中安装并启动 echo app，配置其连接到宿主机的 MCP 测试服务器，观察实际行为。
 
 **挑战与解决**:
 
@@ -89,7 +89,7 @@ swiftc echo/Domain/LLM/JSONValue.swift ... scripts/echo_mcp_client_test.swift -o
 
 **决定性证据 (来自 `/tmp/mcp_test_server.log`)**:
 
-服务器日志清晰地记录了来自模拟器内 Echo app 的请求，User-Agent 显示为 `echo/1 CFNetwork`，证明这是真实的应用实例，而非测试脚本。
+服务器日志清晰地记录了来自模拟器内 echo app 的请求，User-Agent 显示为 `echo/1 CFNetwork`，证明这是真实的应用实例，而非测试脚本。
 
 ```
 ───── 收到请求 ─────
@@ -114,7 +114,7 @@ swiftc echo/Domain/LLM/JSONValue.swift ... scripts/echo_mcp_client_test.swift -o
 ────────────────────
 ```
 
-**结论**: Echo app 成功发起了 `initialize` 握手，接收到了 `Mcp-Session-Id`，并发送了 `notifications/initialized` 通知，最后拉取了工具列表 (`tools/list`)。这证实了从 iOS 应用内部发起的 MCP 协议通信是完全可行的。
+**结论**: echo app 成功发起了 `initialize` 握手，接收到了 `Mcp-Session-Id`，并发送了 `notifications/initialized` 通知，最后拉取了工具列表 (`tools/list`)。这证实了从 iOS 应用内部发起的 MCP 协议通信是完全可行的。
 
 ## 总结
 

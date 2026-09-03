@@ -10,7 +10,7 @@
 // 在它的 Signing & Capabilities 里的 Team 下拉菜单选一下你的 Apple ID，
 // Team 那一栏会显示成类似 "你的名字 (A1B2C3D4E5)" 的格式，
 // 括号里那串 10 位字符就是你的 Team ID，记下来后把这个临时项目删掉即可
-// —— 这样不会碰到 Echo 项目本身的任何文件。
+// —— 这样不会碰到 echo 项目本身的任何文件。
 //
 // PRODUCT_BUNDLE_IDENTIFIER 可以随便改成任意独一无二的字符串，
 // 比如把 rkny6 换成你自己的名字拼音或者一个随机单词。

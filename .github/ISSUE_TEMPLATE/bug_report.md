@@ -26,7 +26,7 @@ assignees: ''
 
 ## 运行环境
 
-- Echo 版本 / commit：
+- echo 版本 / commit：
 - Xcode 版本：
 - iOS 版本（真机 / 模拟器机型）：
 - 是否开启了云端 LLM / 云端图片识别 / 远程 MCP：

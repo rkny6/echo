@@ -77,6 +77,7 @@ actor SettingsService: SettingsProviding {
         settings.useAgnesCloudImageRecognition = newSettings.useAgnesCloudImageRecognition
         settings.allowImageSending = newSettings.allowImageSending
         settings.proactiveCaringEnabled = newSettings.proactiveCaringEnabled
+        settings.useLLMProactiveJudgment = newSettings.useLLMProactiveJudgment
         settings.enableMCP = newSettings.enableMCP
         settings.mcpServerURL = newSettings.mcpServerURL
         settings.showUserAvatar = newSettings.showUserAvatar

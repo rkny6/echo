@@ -18,6 +18,7 @@ struct SettingsServiceTests {
         let live = try await service.getSettings()
         #expect(live.allowImageSending == false)
         #expect(live.proactiveCaringEnabled == true)
+        #expect(live.useLLMProactiveJudgment == false)
         #expect(live.enableMCP == false)
         #expect(live.showUserAvatar == true)
         #expect(live.showCharacterAvatar == true)
@@ -35,6 +36,7 @@ struct SettingsServiceTests {
             useAgnesCloudImageRecognition: true,
             allowImageSending: true,
             proactiveCaringEnabled: false,
+            useLLMProactiveJudgment: true,
             enableMCP: true,
             showUserAvatar: false,
             showCharacterAvatar: false
@@ -56,6 +58,7 @@ struct SettingsServiceTests {
         #expect(after.useAgnesCloudImageRecognition == true)
         #expect(after.allowImageSending == true)
         #expect(after.proactiveCaringEnabled == false)
+        #expect(after.useLLMProactiveJudgment == true)
         #expect(after.enableMCP == true)
         #expect(after.showUserAvatar == false)
         #expect(after.showCharacterAvatar == false)
@@ -68,6 +71,7 @@ struct SettingsServiceTests {
         #expect(rows.first?.selectedModel == "test-model")
         #expect(rows.first?.allowImageSending == true)
         #expect(rows.first?.proactiveCaringEnabled == false)
+        #expect(rows.first?.useLLMProactiveJudgment == true)
         #expect(rows.first?.enableMCP == true)
         #expect(rows.first?.showUserAvatar == false)
         #expect(rows.first?.showCharacterAvatar == false)

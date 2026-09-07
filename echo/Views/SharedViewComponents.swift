@@ -388,11 +388,13 @@ struct AvatarPicker: View {
         .onChange(of: selectedImage) { _, newImage in
             if let image = newImage {
                 let identifier = isUser ? "user" : "character"
-                let oldFilename = AvatarManager.shared.saveAvatar(image, identifier: identifier)
+                let newFilename = AvatarManager.shared.saveAvatar(image, identifier: identifier)
                 if avatarName != (isUser ? "user_default" : "character_default") {
                     AvatarManager.shared.deleteAvatar(filename: avatarName)
                 }
-                onAvatarChanged(oldFilename)
+                avatarName = newFilename
+                onAvatarChanged(newFilename)
+                selectedImage = nil
             }
         }
     }

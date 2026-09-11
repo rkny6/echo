@@ -84,7 +84,9 @@ struct OpenAICompatibleResponse: Decodable {
 
 enum OpenAICompatibleError: LocalizedError {
     case invalidResponse
+    case invalidEndpoint(String)
     case invalidResponseStatus(status: Int, body: String)
+    case invalidResponseFormat(status: Int, contentType: String, body: String, reason: String)
     case noContent
     /// The model requested tool calls despite none being offered (or the
     /// caller only supports plain text).
@@ -94,8 +96,13 @@ enum OpenAICompatibleError: LocalizedError {
         switch self {
         case .invalidResponse:
             return "API 响应无效"
+        case .invalidEndpoint(let endpoint):
+            return "API 地址无效：\(endpoint)"
         case .invalidResponseStatus(let status, let body):
             return "API 响应无效 (状态码: \(status)) 响应体: \(body)"
+        case .invalidResponseFormat(let status, let contentType, let body, let reason):
+            let type = contentType.isEmpty ? "未提供 Content-Type" : contentType
+            return "API 响应格式无效 (状态码: \(status)，类型: \(type))：\(reason)。响应开头：\(body)"
         case .noContent:
             return "API 未返回内容"
         case .unexpectedToolCalls:

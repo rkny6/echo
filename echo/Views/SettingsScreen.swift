@@ -192,7 +192,7 @@ struct SettingsScreen: View {
                         ) {
                             // Debug Mode Toggle
                             ToggleRow(
-                                icon: "bug",
+                                icon: "ladybug.fill",
                                 title: "调试模式",
                                 subtitle: "查看日志和诊断信息",
                                 tintColor: AppTheme.warningColor(colorScheme),
@@ -702,7 +702,7 @@ struct SettingsScreen: View {
                 }
 
                 withAnimation(.easeInOut(duration: 0.3)) {
-                    savedMessage = success ? "测试连接成功" : "测试连接失败：请检查 API Key 和网络"
+                    savedMessage = success ? "测试连接成功" : "测试连接失败：未收到有效的 API 响应"
                     isSaved = false
                     isErrorMessage = !success
                 }

@@ -273,7 +273,7 @@ actor CustomOpenAICompatibleAdapter: LLMProviderService {
         let endpoint = endpointMode.endpointURL(baseURL: baseURL)
         guard let url = URL(string: endpoint) else {
             await logAPI("LLM API test aborted: invalid endpoint URL \(endpoint)", level: .error)
-            return false
+            throw OpenAICompatibleError.invalidEndpoint(endpoint)
         }
 
         var request = URLRequest(url: url)
@@ -313,23 +313,68 @@ actor CustomOpenAICompatibleAdapter: LLMProviderService {
 
             guard let httpResponse = response as? HTTPURLResponse else {
                 await logAPI("LLM API test invalid non-HTTP response after \(elapsedMs)ms", level: .error)
-                return false
+                throw OpenAICompatibleError.invalidResponse
             }
 
-            let success = httpResponse.statusCode >= 200 && httpResponse.statusCode < 300
-            if success {
+            let bodyString = String(data: data, encoding: .utf8) ?? "<binary \(data.count) bytes>"
+            let responseBody = Self.truncateForLog(bodyString, limit: 300)
+            guard (200..<300).contains(httpResponse.statusCode) else {
                 await logAPI(
-                    "LLM API test success status=\(httpResponse.statusCode) after \(elapsedMs)ms",
-                    level: .info
-                )
-            } else {
-                let bodyString = String(data: data, encoding: .utf8) ?? "<no body>"
-                await logAPI(
-                    "LLM API test failed status=\(httpResponse.statusCode) after \(elapsedMs)ms body=\(Self.truncateForLog(bodyString, limit: 300))",
+                    "LLM API test failed status=\(httpResponse.statusCode) after \(elapsedMs)ms body=\(responseBody)",
                     level: .error
                 )
+                throw OpenAICompatibleError.invalidResponseStatus(
+                    status: httpResponse.statusCode,
+                    body: responseBody
+                )
             }
-            return success
+
+            let contentType = httpResponse.value(forHTTPHeaderField: "Content-Type") ?? ""
+            guard contentType.lowercased().contains("json") else {
+                await logAPI(
+                    "LLM API test rejected non-JSON response status=\(httpResponse.statusCode) contentType=\(contentType) body=\(responseBody)",
+                    level: .error
+                )
+                throw OpenAICompatibleError.invalidResponseFormat(
+                    status: httpResponse.statusCode,
+                    contentType: contentType,
+                    body: responseBody,
+                    reason: "服务器返回的不是 JSON，可能填写了网页地址而不是 API 地址"
+                )
+            }
+
+            let result: OpenAICompatibleResponse
+            do {
+                result = try JSONDecoder().decode(OpenAICompatibleResponse.self, from: data)
+            } catch {
+                await logAPI(
+                    "LLM API test JSON decode failed status=\(httpResponse.statusCode) contentType=\(contentType) body=\(responseBody): \(error.localizedDescription)",
+                    level: .error
+                )
+                throw OpenAICompatibleError.invalidResponseFormat(
+                    status: httpResponse.statusCode,
+                    contentType: contentType,
+                    body: responseBody,
+                    reason: "JSON 结构无法解析（\(error.localizedDescription)）"
+                )
+            }
+
+            let hasChatContent = result.choices?.contains { choice in
+                guard let message = choice.message else { return false }
+                return !(message.content?.isEmpty ?? true) || !(message.toolCalls?.isEmpty ?? true)
+            } == true
+            let hasResponseContent = result.output?.contains { item in
+                !(item.content?.compactMap { $0.text }.joined().isEmpty ?? true) || item.type == "function_call"
+            } == true
+            guard hasChatContent || hasResponseContent else {
+                throw OpenAICompatibleError.noContent
+            }
+
+            await logAPI(
+                "LLM API test success status=\(httpResponse.statusCode) after \(elapsedMs)ms contentType=\(contentType)",
+                level: .info
+            )
+            return true
         } catch {
             let elapsedMs = Int(Date().timeIntervalSince(requestStart) * 1000)
             await logAPI(

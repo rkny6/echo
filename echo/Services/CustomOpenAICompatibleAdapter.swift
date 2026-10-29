@@ -130,9 +130,7 @@ actor CustomOpenAICompatibleAdapter: LLMProviderService {
                 return .text(content)
             }
 
-            if let outputText = result.output?.compactMap({ item in
-                item.content?.compactMap { $0.text }.joined(separator: "\n")
-            }).joined(separator: "\n"),
+            if let outputText = result.responseText(),
                !outputText.isEmpty {
                 await logAPI(
                     "LLM API success status=\(httpResponse.statusCode) after \(elapsedMs)ms responseChars=\(outputText.count) source=output url=\(endpoint)",
@@ -363,9 +361,8 @@ actor CustomOpenAICompatibleAdapter: LLMProviderService {
                 guard let message = choice.message else { return false }
                 return !(message.content?.isEmpty ?? true) || !(message.toolCalls?.isEmpty ?? true)
             } == true
-            let hasResponseContent = result.output?.contains { item in
-                !(item.content?.compactMap { $0.text }.joined().isEmpty ?? true) || item.type == "function_call"
-            } == true
+            let hasResponseContent = !(result.responseText()?.isEmpty ?? true)
+                || result.output?.contains { $0.type == "function_call" } == true
             guard hasChatContent || hasResponseContent else {
                 throw OpenAICompatibleError.noContent
             }

@@ -61,10 +61,33 @@ struct OpenAIResponseToolCallDecodingTests {
         #expect(calls?.count == 1)
         #expect(calls?.first?.id == "call_1")
         #expect(calls?.first?.name == "get_weather")
-        let text = response.output?.compactMap { item in
-            item.content?.compactMap { $0.text }.joined(separator: "\n")
-        }.joined(separator: "\n")
+        let text = response.responseText()
         #expect(text == "东京今天20度")
+    }
+
+    @Test func responsesTextExcludesReasoningAndNonTextItems() throws {
+        let json = """
+        {"output": [
+          {"type": "reasoning", "content": [{"type": "reasoning_text", "text": "内部推理，不应显示"}]},
+          {"type": "web_search_call", "content": [{"type": "output_text", "text": "工具数据，不应显示"}]},
+          {"type": "message", "content": [
+            {"type": "refusal", "text": "拒答标记，不应显示"},
+            {"type": "output_text", "text": "这是给用户的回复"}
+          ]}
+        ]}
+        """
+        let response = try JSONDecoder().decode(OpenAICompatibleResponse.self, from: Data(json.utf8))
+        #expect(response.responseText() == "这是给用户的回复")
+    }
+
+    @Test func reasoningOnlyResponsesHaveNoVisibleText() throws {
+        let json = """
+        {"output": [
+          {"type": "reasoning", "content": [{"type": "reasoning_text", "text": "内部推理"}]}
+        ]}
+        """
+        let response = try JSONDecoder().decode(OpenAICompatibleResponse.self, from: Data(json.utf8))
+        #expect(response.responseText() == nil)
     }
 
     @Test func plainTextResponseHasNoToolCalls() throws {

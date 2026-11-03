@@ -44,7 +44,29 @@ struct OpenAICompatibleResponse: Decodable {
     }
 
     struct OutputContent: Decodable {
+        let type: String?
         let text: String?
+    }
+
+    /// Extracts the assistant's visible reply from a Responses API payload.
+    ///
+    /// The `output[]` array mixes several item kinds: `reasoning` (the model's
+    /// chain of thought), `message` (the actual reply), `function_call`, and
+    /// `web_search_call`. Only `message` items — and within them only
+    /// `output_text` parts — may be shown to the user. Concatenating every
+    /// item's `text` leaks the chain of thought into the chat.
+    func responseText() -> String? {
+        guard let output else { return nil }
+        let texts = output.compactMap { item -> String? in
+            guard item.type == "message" else { return nil }
+            let parts = (item.content ?? []).compactMap { part -> String? in
+                guard part.type == nil || part.type == "output_text" else { return nil }
+                return part.text
+            }
+            return parts.isEmpty ? nil : parts.joined()
+        }
+        guard !texts.isEmpty else { return nil }
+        return texts.joined(separator: "\n")
     }
 
     /// Extracts requested tool calls from either the chat-completions
